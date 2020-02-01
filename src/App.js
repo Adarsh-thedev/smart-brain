@@ -8,33 +8,56 @@ import './App.css';
 
 const particlOptions = {
   particles : {
-    number : {
-      value : 100,
-      density : {
-        enable : true,
-        value_area : 800
+      number : {
+          value : 360,
+          density : {
+              enable : false,
+          }
+      },
+      size : {
+          value : 5,
+          random : true,
+          anim : {
+              speed : 3,
+              size_min : 0.3
+          }
       },
       line_linked : {
-        enable : true,
-        distance : 250,
-        width : 1
+          enable : false
       },
       move : {
-        enable : true,
-        speed : 6
+          random : true,
+          speed : 2.5,
+          direction : "bottom",
+          out_mode : "out"
       }
-    }
   },
-  interactivity:{
-    detect_on:'canvas',
-    events:{
-        onhover:{
-          enable:true,
-          mode:'grab'
+  interactivity: {
+      events : {
+          onhover : {
+              enable : true,
+              mode : "repulse"
+          },
+           onclick : {
+              enable : true,
+              mode : "repulse"
+          }
+      },
+       modes : {
+          bubble : {
+              distance : 250,
+              duration : 2,
+              size : 0,
+              opacity : 0
+          },
+          repulse : {
+              distance : 300,
+              duration : 4
+          }
       }
-    }
   }
 }
+
 
 class App extends Component {
   render() {

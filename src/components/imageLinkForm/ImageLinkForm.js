@@ -9,8 +9,8 @@ const ImageLinkForm = () => {
             </p>
             <div className = 'center'>
                 <div className = 'pa4 br4 shadow-5 center form'>
-                    <input type = 'search' className = 'bg-washed-yellow hover-bg-black hover-white pa2 f4 w-70 center br3' />
-                    <button className = 'w-30 grow pointer br3 f4 ml2 link ph3 pb2 dib white bg-light-purple'>Detect</button>
+                    <input type = 'search' className = 'bg-lightest-blue hover-bg-black hover-white pa2 f4 w-70 center br3' />
+                    <button className = 'w-30 tc grow pointer br3 f4 ml2 link ph3 pb2 dib white btn'>Detect</button>
                 </div>
             </div>
         </div>
