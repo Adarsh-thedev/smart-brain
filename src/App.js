@@ -3,8 +3,14 @@ import Navigation from './components/navigation/Navigation';
 import Logo from './components/logo/Logo';
 import ImageLinkForm from './components/imageLinkForm/ImageLinkForm';
 import Rank from './components/rank/Rank';
+import CelebRecognition from './components/celebRecognition/CelebRecognition';
 import Particles from 'react-particles-js';
+import Clarifai from 'clarifai';
 import './App.css';
+
+const app = new Clarifai.App({
+  apiKey: '6a6ffa8248ea4f43ba2f048035af65e2'
+ });
 
 const particlOptions = {
   particles : {
@@ -63,16 +69,25 @@ class App extends Component {
   constructor () {
     super();
     this.state = {
-      input : ''
+      input : '',
+      imageUrl : '',
+      celebName : ''
     }
   }
 
   onInputChange = (event) => {
-    console.log(event.target.value);
+    this.setState({input : event.target.value})
+    //console.log(event.target.value);
   }
 
-  onSubmit = () => {
-    console.log('working');
+  onButtonSubmit = () => {
+    app.models.predict(Clarifai.CELEBRITY_MODEL,
+      this.state.input)
+      .then(response => {
+        let celebName = response.outputs[0].data.regions[0].data.concepts[0].name;
+        console.log(celebName.toUpperCase());
+        this.setState({celebName : celebName, imageUrl : this.state.input});
+      })
   }
 
   render() {
@@ -83,8 +98,9 @@ class App extends Component {
         <Logo/>
         <Rank/>
         <ImageLinkForm onInputChange = {this.onInputChange}
-          onButtonSubmit = {this.onSubmit}
+          onButtonSubmit = {this.onButtonSubmit}
         />
+        <CelebRecognition imageUrl = {this.state.imageUrl} celebName = {this.state.celebName}/>
       </div>
     );
   }
