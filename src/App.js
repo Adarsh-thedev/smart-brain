@@ -40,22 +40,12 @@ const particlOptions = {
   },
   interactivity: {
       events : {
-          onhover : {
-              enable : true,
-              mode : "repulse"
-          },
            onclick : {
               enable : true,
               mode : "repulse"
           }
       },
        modes : {
-          bubble : {
-              distance : 250,
-              duration : 2,
-              size : 0,
-              opacity : 0
-          },
           repulse : {
               distance : 300,
               duration : 4
