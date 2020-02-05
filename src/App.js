@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Navigation from './components/navigation/Navigation';
+import SignIn from './components/signin/SignIn';
 import Logo from './components/logo/Logo';
 import ImageLinkForm from './components/imageLinkForm/ImageLinkForm';
 import Rank from './components/rank/Rank';
@@ -61,7 +62,8 @@ class App extends Component {
     this.state = {
       input : '',
       imageUrl : '',
-      celebName : ''
+      celebName : '',
+      route : 'signin'
     }
   }
 
@@ -75,22 +77,31 @@ class App extends Component {
       this.state.input)
       .then(response => {
         let celebName = response.outputs[0].data.regions[0].data.concepts[0].name;
-        console.log(celebName.toUpperCase());
+        //console.log(celebName.toUpperCase());
         this.setState({celebName : celebName, imageUrl : this.state.input});
       })
+  }
+
+  onRouteChange = (route) => {
+    this.setState({route : route});
   }
 
   render() {
     return (
       <div className="App">
         <Particles className = 'particles' params={particlOptions}/>
-        <Navigation/>
-        <Logo/>
-        <Rank/>
-        <ImageLinkForm onInputChange = {this.onInputChange}
-          onButtonSubmit = {this.onButtonSubmit}
-        />
-        <CelebRecognition imageUrl = {this.state.imageUrl} celebName = {this.state.celebName}/>
+        <Navigation onRouteChange = {this.onRouteChange}/>
+        { this.state.route === 'signin'
+          ? <SignIn onRouteChange = {this.onRouteChange}/>
+          :<div>
+            <Logo/>
+            <Rank/>
+            <ImageLinkForm onInputChange = {this.onInputChange}
+              onButtonSubmit = {this.onButtonSubmit}
+            />
+            <CelebRecognition imageUrl = {this.state.imageUrl} celebName = {this.state.celebName}/>
+          </div>
+        }
       </div>
     );
   }
