@@ -8,6 +8,7 @@ import CelebRecognition from './components/celebRecognition/CelebRecognition';
 import Particles from 'react-particles-js';
 import Clarifai from 'clarifai';
 import './App.css';
+import Register from './components/register/Register';
 
 const app = new Clarifai.App({
   apiKey: '6a6ffa8248ea4f43ba2f048035af65e2'
@@ -77,7 +78,7 @@ class App extends Component {
       this.state.input)
       .then(response => {
         let celebName = response.outputs[0].data.regions[0].data.concepts[0].name;
-        //console.log(celebName.toUpperCase());
+        //console.log(celebName);
         this.setState({celebName : celebName, imageUrl : this.state.input});
       })
   }
@@ -91,16 +92,18 @@ class App extends Component {
       <div className="App">
         <Particles className = 'particles' params={particlOptions}/>
         <Navigation onRouteChange = {this.onRouteChange}/>
-        { this.state.route === 'signin'
+        { this.state.route === 'home'
+          ? <div>
+              <Logo/>
+              <Rank/>
+              <ImageLinkForm onInputChange = {this.onInputChange}
+                onButtonSubmit = {this.onButtonSubmit}
+              />
+              <CelebRecognition imageUrl = {this.state.imageUrl} celebName = {this.state.celebName}/>
+            </div>
+          : this.state.route === 'signin'
           ? <SignIn onRouteChange = {this.onRouteChange}/>
-          :<div>
-            <Logo/>
-            <Rank/>
-            <ImageLinkForm onInputChange = {this.onInputChange}
-              onButtonSubmit = {this.onButtonSubmit}
-            />
-            <CelebRecognition imageUrl = {this.state.imageUrl} celebName = {this.state.celebName}/>
-          </div>
+          : <Register onRouteChange = {this.onRouteChange}/>
         }
       </div>
     );
