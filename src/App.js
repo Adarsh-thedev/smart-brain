@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Navigation from './components/navigation/Navigation';
 import SignIn from './components/signin/SignIn';
+import Register from './components/register/Register';
 import Logo from './components/logo/Logo';
 import ImageLinkForm from './components/imageLinkForm/ImageLinkForm';
 import Rank from './components/rank/Rank';
@@ -8,7 +9,6 @@ import CelebRecognition from './components/celebRecognition/CelebRecognition';
 import Particles from 'react-particles-js';
 import Clarifai from 'clarifai';
 import './App.css';
-import Register from './components/register/Register';
 
 const app = new Clarifai.App({
   apiKey: '6a6ffa8248ea4f43ba2f048035af65e2'
@@ -64,7 +64,8 @@ class App extends Component {
       input : '',
       imageUrl : '',
       celebName : '',
-      route : 'signin'
+      route : 'signin',
+      isSignedIn : false
     }
   }
 
@@ -84,26 +85,32 @@ class App extends Component {
   }
 
   onRouteChange = (route) => {
+    if(route === 'signout') {
+      this.setState({isSignedIn : false});
+    } else if(route === 'home'){
+      this.setState({isSignedIn : true})
+    }
     this.setState({route : route});
   }
 
   render() {
+    const {imageUrl, celebName, route, isSignedIn} = this.state;
     return (
       <div className="App">
         <Particles className = 'particles' params={particlOptions}/>
-        <Navigation onRouteChange = {this.onRouteChange}/>
-        { this.state.route === 'home'
+        <Navigation onRouteChange = {this.onRouteChange} isSignedIn = {isSignedIn}/>
+        { route === 'home'
           ? <div>
               <Logo/>
               <Rank/>
               <ImageLinkForm onInputChange = {this.onInputChange}
                 onButtonSubmit = {this.onButtonSubmit}
               />
-              <CelebRecognition imageUrl = {this.state.imageUrl} celebName = {this.state.celebName}/>
+              <CelebRecognition imageUrl = {imageUrl} celebName = {celebName}/>
             </div>
-          : this.state.route === 'signin'
-          ? <SignIn onRouteChange = {this.onRouteChange}/>
-          : <Register onRouteChange = {this.onRouteChange}/>
+          : route === 'register'
+          ? <Register onRouteChange = {this.onRouteChange}/>
+          : <SignIn onRouteChange = {this.onRouteChange}/>
         }
       </div>
     );
