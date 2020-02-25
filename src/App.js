@@ -21,7 +21,7 @@ const particlOptions = {
           density : {
               enable : false,
           }
-      },
+      }, 
       size : {
           value : 5,
           random : true,
