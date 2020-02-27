@@ -97,10 +97,24 @@ class App extends Component {
     app.models.predict(Clarifai.CELEBRITY_MODEL,
       this.state.input)
       .then(response => {
-        let celebName = response.outputs[0].data.regions[0].data.concepts[0].name;
-        //console.log(celebName);
-        this.setState({celebName : celebName, imageUrl : this.state.input});
-      })
+        if(response) {
+          fetch('http://localhost:3000/image', {
+            method : 'put',
+            headers : {'Content-Type' : 'application/json'},
+           body : JSON.stringify({
+             id : this.state.user.id
+          })
+        })
+        .then(response => response.json())
+        .then(count => { 
+          this.setState(
+            Object.assign(this.state.user, {entries : count})          )
+        })
+      }
+      let celebName = response.outputs[0].data.regions[0].data.concepts[0].name;
+      //console.log(celebName);
+      this.setState({celebName : celebName, imageUrl : this.state.input});
+    })
   }
 
   onRouteChange = (route) => {
@@ -113,7 +127,7 @@ class App extends Component {
   }
 
   render() {
-    const {imageUrl, celebName, route, isSignedIn} = this.state;
+    const {imageUrl, celebName, route, isSignedIn, user} = this.state;
     return (
       <div className="App">
         <Particles className = 'particles' params={particlOptions}/>
@@ -121,7 +135,7 @@ class App extends Component {
         { route === 'home'
           ? <div>
               <Logo/>
-              <Rank/>
+              <Rank name = {user.name} entries = {user.entries}/>
               <ImageLinkForm onInputChange = {this.onInputChange}
                 onButtonSubmit = {this.onButtonSubmit}
               />
@@ -133,7 +147,10 @@ class App extends Component {
                 loadUser = {this.loadUser}
                 // user = {user}
               />
-          : <SignIn onRouteChange = {this.onRouteChange}/>
+          : <SignIn 
+              onRouteChange = {this.onRouteChange}
+              loadUser = {this.loadUser}
+            />
         }
       </div>
     );
