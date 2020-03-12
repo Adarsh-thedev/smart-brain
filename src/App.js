@@ -3,11 +3,11 @@ import Navigation from './components/navigation/Navigation';
 import SignIn from './components/signin/SignIn';
 import Register from './components/register/Register';
 import Logo from './components/logo/Logo';
+import Clarifai from 'clarifai';
 import ImageLinkForm from './components/imageLinkForm/ImageLinkForm';
 import Rank from './components/rank/Rank';
 import CelebRecognition from './components/celebRecognition/CelebRecognition';
 import Particles from 'react-particles-js';
-import Clarifai from 'clarifai';
 import './App.css';
 
 const app = new Clarifai.App({
